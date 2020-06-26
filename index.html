@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Influence Maker</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="https://unpkg.com/konva@6.0.0/konva.min.js"></script>
+  <link rel="stylesheet" href="custom.css">
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+    <div class="container container-dark header-container" style="padding-top: 50px;">
+        <h1>Create posts for your Social Media</h1>
+        <p class="lead">Create simple and beautiful social media images</p>
+    </div>
+
+    <div class="container-fluid container-dark">
+        <div class="row" style="height: 300px;">
+            <div class="col-lg-6">
+                <canvas id="imageEditor" style="background-color: aliceblue; width: 100%; height: auto;"></canvas>
+            </div>
+            <div class="col-lg-6">
+                <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
+                <p><label for="file" style="cursor: pointer;">Upload Image</label></p>
+                <label for="textdisplay">Text:</label>
+                <input type="text" class="form-control" id="textdisplay" name="text">
+            </div>
+        </div>
+    </div>
+
+    <div class="container container-dark header-container" style="padding-top: 50px;" id="containerKonva">
+
+    </div>
+    
+    <script>
+
+        var loadFile = function(event) {
+            var canvas = document.getElementById("imageEditor");
+            var ctx = canvas.getContext("2d");
+            var img = new Image();
+            img.onload = function(){
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img,0,0);
+            }
+            img.src = URL.createObjectURL(event.target.files[0]);
+        };
+        
+        var textEditor=function(){
+            var canvas = document.getElementById("imageEditor");
+            var ctx = canvas.getContext("2d");
+            var text = document.getElementById('textdisplay').value
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#3e3e3e";
+            ctx.font = "30px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(text,canvas.width/2,canvas.height/2);
+        }
+        window.addEventListener("keyup", textEditor, true);
+    </script>
+
+
+</body>
+</html>

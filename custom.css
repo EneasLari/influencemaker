@@ -1,0 +1,14 @@
+body {
+    background-color: #2C2529;
+}
+
+.container-dark{
+    color: white;
+    text-align: center;
+}
+
+.header-container{
+    font-family: 'Lobster', cursive;
+    color: white;
+    text-align: center;
+}
