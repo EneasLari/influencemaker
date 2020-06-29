@@ -21,15 +21,21 @@
     </div>
 
     <div class="container-fluid container-dark">
-        <div class="row" style="height: 300px;">
-            <div class="col-lg-6">
-                <canvas id="imageEditor" style="background-color: aliceblue; width: 100%; height: auto;"></canvas>
+        <div class="row">
+            <div class="col">
+                <div style="position: relative;">
+                    <canvas id="imageEditor" style="background-color: aliceblue; width: 100%;position: absolute;top: 0px;left: 0px;z-index: 1;"></canvas>
+                    <canvas id="textcanvas" style="width: 100%;position: absolute;top: 0px;left: 0px;z-index: 2;"></canvas>
+                </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col">
                 <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
-                <p><label for="file" style="cursor: pointer;">Upload Image</label></p>
-                <label for="textdisplay">Text:</label>
+                <p><label for="file" style="cursor: pointer;">Background Image</label></p>
+                <label for="textdisplay">Text On image:</label>
                 <input type="text" class="form-control" id="textdisplay" name="text">
+
+                <p><input type="button" name="image" id="filetodownload"  onclick="download(event)" style="display: none;"></p>
+                <p><label for="filetodownload" style="cursor: pointer;">Download Image</label></p>
             </div>
         </div>
     </div>
@@ -49,21 +55,42 @@
                 canvas.width = img.width;
                 canvas.height = img.height;
                 ctx.drawImage(img,0,0);
+                textEditor();
             }
             img.src = URL.createObjectURL(event.target.files[0]);
         };
         
         var textEditor=function(){
-            var canvas = document.getElementById("imageEditor");
+            var canvas = document.getElementById("textcanvas");
+            canvas.width=document.getElementById("imageEditor").width;
+            canvas.height=document.getElementById("imageEditor").height;
             var ctx = canvas.getContext("2d");
             var text = document.getElementById('textdisplay').value
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#3e3e3e";
-            ctx.font = "30px Arial";
+            //ctx.fillStyle = "#3e3e3e";
+            ctx.font = "30px Comic Sans MS";
             ctx.textAlign = "center";
             ctx.fillText(text,canvas.width/2,canvas.height/2);
         }
         window.addEventListener("keyup", textEditor, true);
+
+        var download=function(event){
+            var newcanvas = document.createElement("CANVAS");
+            
+            var canvastodownload = document.getElementById("imageEditor");
+            newcanvas.width=canvastodownload.width;
+            newcanvas.height=canvastodownload.height;
+            var canvas2 = document.getElementById("textcanvas");
+            var ctxtodownload=newcanvas.getContext("2d");
+            ctxtodownload.drawImage(canvastodownload,0,0);
+            ctxtodownload.drawImage(canvas2,0,0);
+            var image = newcanvas.toDataURL("image/png",1);
+            // document.write('<img src="'+image+'"/>');
+            var link = document.createElement('a');
+            link.download = "socailmedia.png";
+            link.href = image;
+            link.click();
+        }
     </script>
 
 
