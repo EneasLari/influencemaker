@@ -8,6 +8,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="colorpicker/js/bootstrap-colorpicker.js"></script>
   <script src="https://unpkg.com/konva@6.0.0/konva.min.js"></script>
   <link rel="stylesheet" href="custom.css">
   <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
@@ -23,19 +24,42 @@
     <div class="container-fluid container-dark">
         <div class="row">
             <div class="col">
+                <div class="container">
+                    <span class="btn-toolbar">
+                        <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
+                        <p><label  type="button" class="btn btn-outline-light text-light btn-sm"  for="file" style="cursor: pointer;">Image</label></p>
+                        
+                        <p><input type="button" name="image" id="filetodownload"  onclick="download(event)" style="display: none;"></p>
+                        <p><label type="button" class="btn btn-outline-light text-light btn-sm"  for="filetodownload" style="cursor: pointer;">Download Image</label></p>
+                        
+                        <p><input type="color" name="image" id="colortext" style="display: none;" value="#000000" ></p>
+                        <p><label class="btn btn-outline-light text-light btn-sm"  for="colortext" style="cursor: pointer;">Color</label></p>
+
+                        <div class="form-group">
+                            <!-- <label class="btn btn-outline-light text-light btn-sm" for="exampleFormControlSelect1"  style="cursor: pointer;">Example select</label> -->
+                            <select class="form-control btn btn-outline-light btn-sm" id="fontsize" onchange="chageFontSize()">
+                              <option>50px</option>
+                              <option>30px</option>
+                              <option>60px</option>
+                              <option>90px</option>
+                              <option>120px</option>
+                            </select>
+                        </div>
+
+                    </span>
+                </div>
+                <label for="textdisplay">Text:</label>
+                <input type="text" class="form-control" id="textdisplay" name="text">
+                <br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <div style="position: relative;">
                     <canvas id="imageEditor" style="background-color: aliceblue; width: 100%;position: absolute;top: 0px;left: 0px;z-index: 1;"></canvas>
                     <canvas id="textcanvas" style="width: 100%;position: absolute;top: 0px;left: 0px;z-index: 2;"></canvas>
+                    <canvas id="downloading" style="visibility: hidden;"></canvas>
                 </div>
-            </div>
-            <div class="col">
-                <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
-                <p><label for="file" style="cursor: pointer;">Background Image</label></p>
-                <label for="textdisplay">Text On image:</label>
-                <input type="text" class="form-control" id="textdisplay" name="text">
-
-                <p><input type="button" name="image" id="filetodownload"  onclick="download(event)" style="display: none;"></p>
-                <p><label for="filetodownload" style="cursor: pointer;">Download Image</label></p>
             </div>
         </div>
     </div>
@@ -43,32 +67,67 @@
     <div class="container container-dark header-container" style="padding-top: 50px;" id="containerKonva">
 
     </div>
-    <!-- html5 - canvas element - Multiple layers
-    https://stackoverflow.com/questions/3008635/html5-canvas-element-multiple-layers -->
+
     <script>
+        //Globals
+        var BackgroundImage=null;
+        var TextOnCanvas="";
+        var defaultColor = "#000000";
+        
+        var colorWell=document.getElementById("colortext")
+        var selectedFontSize=document.getElementById("fontsize");
+        
+
+        window.addEventListener("load", startup, false);
+
+        function startup() {
+          colorWell.value = defaultColor;
+          colorWell.addEventListener("input", changeColor, false);
+          colorWell.addEventListener("change", changeColor, false);
+          colorWell.select();
+        }
+
+        var changeColor=function(t){
+            console.log("COLORCHANGER "+event.target.value);
+            textEditor(event.target.value,selectedFontSize.options[selectedFontSize.selectedIndex].value);
+        }
+
+        var chageFontSize=function(){
+            textEditor(colorWell.value,selectedFontSize.options[selectedFontSize.selectedIndex].value);
+        }
 
         var loadFile = function(event) {
             var canvas = document.getElementById("imageEditor");
-            var ctx = canvas.getContext("2d");
+            var ctx = setupCanvas(canvas);
             var img = new Image();
             img.onload = function(){
                 canvas.width = img.width;
                 canvas.height = img.height;
                 ctx.drawImage(img,0,0);
-                textEditor();
+                console.log(selectedFontSize.options[selectedFontSize.selectedIndex].value);
+                textEditor(colorWell.value,selectedFontSize.options[selectedFontSize.selectedIndex].value);
             }
             img.src = URL.createObjectURL(event.target.files[0]);
+            BackgroundImage=img;
         };
         
-        var textEditor=function(){
+        var textEditor=function(color,size){
             var canvas = document.getElementById("textcanvas");
             canvas.width=document.getElementById("imageEditor").width;
             canvas.height=document.getElementById("imageEditor").height;
-            var ctx = canvas.getContext("2d");
+            var ctx = setupCanvas(canvas);
             var text = document.getElementById('textdisplay').value
+            TextOnCanvas=text;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            //ctx.fillStyle = "#3e3e3e";
-            ctx.font = "30px Comic Sans MS";
+            if(color){
+                ctx.fillStyle = color;
+            }
+            if(size){
+                ctx.font = size+" Lora";
+            }else{
+                ctx.font =selectedFontSize.options[selectedFontSize.selectedIndex].value+ " Lora";
+            }
+
             ctx.textAlign = "center";
             ctx.fillText(text,canvas.width/2,canvas.height/2);
         }
@@ -76,21 +135,51 @@
 
         var download=function(event){
             var newcanvas = document.createElement("CANVAS");
-            
-            var canvastodownload = document.getElementById("imageEditor");
-            newcanvas.width=canvastodownload.width;
-            newcanvas.height=canvastodownload.height;
-            var canvas2 = document.getElementById("textcanvas");
-            var ctxtodownload=newcanvas.getContext("2d");
-            ctxtodownload.drawImage(canvastodownload,0,0);
-            ctxtodownload.drawImage(canvas2,0,0);
+            if(BackgroundImage!=null){
+                newcanvas.width=BackgroundImage.width
+                newcanvas.height=BackgroundImage.height
+            }
+
+            var ctxtodownload=setupCanvas(newcanvas)
+            if(BackgroundImage){
+                ctxtodownload.drawImage(BackgroundImage,0,0);
+            }
+            if(colorWell.value){
+                ctxtodownload.fillStyle = colorWell.value;
+            }
+            ctxtodownload.font=selectedFontSize.options[selectedFontSize.selectedIndex].value+ " Comic Sans MS";
+            ctxtodownload.textAlign="center";
+            ctxtodownload.fillText(TextOnCanvas,newcanvas.width/2,newcanvas.height/2);
+
             var image = newcanvas.toDataURL("image/png",1);
             // document.write('<img src="'+image+'"/>');
             var link = document.createElement('a');
-            link.download = "socailmedia.png";
+            link.download = "socialmedia.png";
             link.href = image;
             link.click();
         }
+
+
+        function setupCanvas(canvas) {
+          // Get the device pixel ratio, falling back to 1.
+          var dpr = window.devicePixelRatio || 1;
+          
+          // Get the size of the canvas in CSS pixels.
+          var rect = canvas.getBoundingClientRect();
+          console.log("HEIGHT="+canvas.height)
+          // Give the canvas pixel dimensions of their CSS
+          // size * the device pixel ratio.
+          if(rect.width!=0 && rect.height!=0){
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+          }
+          var ctx = canvas.getContext('2d');
+          // Scale all drawing operations by the dpr, so you
+          // don't have to worry about the difference.
+          ctx.scale(dpr, dpr);
+          return ctx;
+        }
+
     </script>
 
 
