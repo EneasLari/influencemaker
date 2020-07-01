@@ -148,11 +148,13 @@
 
         var loadFile = function(event) {
             var canvas = document.getElementById("imageEditor");
-            var ctx = canvas.getContext('2d')
             var img = new Image();
             img.onload = function(){
                 canvas.width = img.width;
                 canvas.height = img.height;
+                var ctx = canvas.getContext('2d')
+                ctx.mozImageSmoothingEnabled = false;  // firefox
+                ctx.imageSmoothingEnabled = false;
                 ctx.drawImage(img,0,0);
                 textEditor();
             }
@@ -196,6 +198,11 @@
             ctxtodownload.textAlign="center";
             ctxtodownload.fillText(TextOnCanvas,newcanvas.width/2,newcanvas.height/2);
 
+            // ctxtodownload.drawImage(textcanvas,
+            //     newcanvas.width / 2 - textcanvas.width / 2,
+            //     newcanvas.height / 2 - textcanvas.height / 2    
+            // );
+
             var image = newcanvas.toDataURL("image/png",1);
             // document.write('<img src="'+image+'"/>');
             var link = document.createElement('a');
@@ -216,6 +223,10 @@
           if(rect.width!=0 || rect.height!=0){
             canvas.width = rect.width * dpr;
             canvas.height = rect.height * dpr;
+
+            canvas.style.width = `${dpr*canvas.width}px`;
+            canvas.style.height = `${dpr*canvas.height}px`
+
           }
           var ctx = canvas.getContext('2d');
           // Scale all drawing operations by the dpr, so you
