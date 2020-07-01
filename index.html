@@ -150,12 +150,12 @@
             var canvas = document.getElementById("imageEditor");
             var img = new Image();
             img.onload = function(){
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                var ctx = setupCanvas(canvas)
+                canvas.width = img.width;
+                canvas.height = img.height;
+                var ctx = canvas.getContext('2d');
                 ctx.mozImageSmoothingEnabled = false;  // firefox
                 ctx.imageSmoothingEnabled = false;
-                ctx.drawImage(img,0,0, canvas.width, canvas.height);
+                ctx.drawImage(img,0,0);
                 textEditor();
             }
             img.src = URL.createObjectURL(event.target.files[0]);
@@ -166,7 +166,9 @@
             var canvas = document.getElementById("textcanvas");
             canvas.width=document.getElementById("imageEditor").width;
             canvas.height=document.getElementById("imageEditor").height;
+            console.log("BEFORE "+canvas.width+" "+canvas.height);
             var ctx = setupCanvas(canvas);
+            console.log("AFTER "+canvas.width+" "+canvas.height);
             var text = document.getElementById('textdisplay').value
             TextOnCanvas=text;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -182,26 +184,28 @@
 
         var download=function(event){
             var newcanvas = document.createElement("CANVAS");
+            var textcanvas =document.getElementById("textcanvas");
             if(BackgroundImage!=null){
                 newcanvas.width=BackgroundImage.width
                 newcanvas.height=BackgroundImage.height
             }
-
+            console.log("BEFORE "+newcanvas.width+" "+newcanvas.height);
             var ctxtodownload=setupCanvas(newcanvas)
+            console.log("AFTER "+newcanvas.width+" "+newcanvas.height);
             if(BackgroundImage){
                 ctxtodownload.drawImage(BackgroundImage,0,0);
             }
-            if(colorWell.value){
-                ctxtodownload.fillStyle = colorWell.value;
-            }
-            ctxtodownload.font=fontsize+" "+fontType;
-            ctxtodownload.textAlign="center";
-            ctxtodownload.fillText(TextOnCanvas,newcanvas.width/2,newcanvas.height/2);
+            // if(colorWell.value){
+            //     ctxtodownload.fillStyle = colorWell.value;
+            // }
+            // ctxtodownload.font=fontsize+" "+fontType;
+            // ctxtodownload.textAlign="center";
+            // ctxtodownload.fillText(TextOnCanvas,newcanvas.width/2,newcanvas.height/2);
 
-            // ctxtodownload.drawImage(textcanvas,
-            //     newcanvas.width / 2 - textcanvas.width / 2,
-            //     newcanvas.height / 2 - textcanvas.height / 2    
-            // );
+            ctxtodownload.drawImage(textcanvas,
+                newcanvas.width / 2 - textcanvas.width / 2,
+                newcanvas.height / 2 - textcanvas.height / 2 
+            );
 
             var image = newcanvas.toDataURL("image/png",1);
             // document.write('<img src="'+image+'"/>');
@@ -214,7 +218,7 @@
 
         function setupCanvas(canvas) {
           // Get the device pixel ratio, falling back to 1.
-          var dpr = window.devicePixelRatio || 1;
+          var dpr = window.devicePixelRatio || 2;
           
           // Get the size of the canvas in CSS pixels.
           var rect = canvas.getBoundingClientRect();
@@ -231,6 +235,7 @@
           var ctx = canvas.getContext('2d');
           // Scale all drawing operations by the dpr, so you
           // don't have to worry about the difference.
+          console.log("DPR="+dpr)
           ctx.scale(dpr, dpr);
           return ctx;
         }
