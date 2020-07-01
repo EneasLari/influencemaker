@@ -1,204 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Influence Maker</title>
+  <title>InfluenceDoor</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="custom.css">
-  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="pricing.css">
+  <script src="https://gumroad.com/js/gumroad.js"></script>
+  <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="0bb34686-b79e-42d7-9585-1b086ae30f9c";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>
+  <link rel="icon" href="digital-marketing.svg">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-169397599-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-169397599-1');
+</script>
+
+
+
 </head>
-<body>
-
-
-    <div class="container container-dark header-container" style="padding-top: 50px;">
-        <h1>Create posts for your Social Media</h1>
-        <p class="lead">Create simple and beautiful social media images</p>
-    </div>
-
-    <div class="container-fluid container-dark">
-        <div class="row">
-            <div class="col">
-                <div class="container">
-                    <span class="btn-toolbar">
-                        <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
-                        <p><label  type="button" class="btn btn-outline-light text-light btn-sm"  for="file" style="cursor: pointer;">Image</label></p>
-                        
-                        <p><input type="button" name="image" id="filetodownload"  onclick="download(event)" style="display: none;"></p>
-                        <p><label type="button" class="btn btn-outline-light text-light btn-sm"  for="filetodownload" style="cursor: pointer;">Download Image</label></p>
-                        
-                        <p><input type="color" name="image" id="colortext" style="display: none;" value="#000000" ></p>
-                        <p><label class="btn btn-outline-light text-light btn-sm"  for="colortext" style="cursor: pointer;">Color</label></p>
-
-                        <div class="form-group">
-                            <!-- <label class="btn btn-outline-light text-light btn-sm" for="exampleFormControlSelect1"  style="cursor: pointer;">Example select</label> -->
-                            <select class="form-control btn btn-outline-light btn-sm" id="fontsize" onchange="changeFont()">
-                              <option>50px</option>
-                              <option>30px</option>
-                              <option>60px</option>
-                              <option>90px</option>
-                              <option>120px</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <!-- <label class="btn btn-outline-light text-light btn-sm" for="exampleFormControlSelect1"  style="cursor: pointer;">Example select</label> -->
-                            <select class="form-control btn btn-outline-light btn-sm" id="fontType" onchange="changeFont()">
-                              <option>Arial</option>
-                              <option>Comic Sans MS</option>
-                              <option>Helvetica</option>
-                              <option>Verdana</option>
-                              <option>Impact</option>
-                              <option>Trebuchet MS</option>
-                              <option>Arial Black</option>
-                            </select>
-                        </div>
-
-                    </span>
-                </div>
-                <label for="textdisplay">Text:</label>
-                <input type="text" class="form-control" id="textdisplay" name="text">
-                <br>
-            </div>
+<body data-spy="scroll" data-target=".navbar">
+<header>  
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-sm  navbar-dark fixed-top navbar-custom">
+      <a class="navbar-brand" href="#">InfluenceDoor</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon "></span>
+      </button>
+      <div class="container">
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#features">Features</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#pricing">Pricing</a>
+                </li>
+            </ul>
         </div>
-        <div class="row">
-            <div class="col">
-                <div style="position: relative;">
-                    <canvas id="imageEditor" style="background-color: aliceblue; width: 100%;position: absolute;top: 0px;left: 0px;z-index: 1;"></canvas>
-                    <canvas id="textcanvas" style="width: 100%;position: absolute;top: 0px;left: 0px;z-index: 2;"></canvas>
-                    <canvas id="downloading" style="visibility: hidden;"></canvas>
-                </div>
-            </div>
+      </div>
+    </nav>
+    <br>
+  </div> 
+  <div class="container container-empty-header"></div>
+  <div class="container container-dark">
+    <h1>Find the fastest growing influencers for your campaigns</h1>
+    <p class="lead">Hundreds of Instagram and TikTok influencers, delivered to you via email, every month</p>
+    <a class="btn btn-outline-light text-light btn-lg" href="https://gum.co/Uhxit" target="_blank" style="color: white;">Subscribe</a>
+  </div>
+  <div class="container container-dark " >
+    <img src="undraw_predictive_analytics_kf9n.svg" class="img-fluid mx-auto d-block" style="padding-top: 50px; padding-bottom: 50px;width: 50%;height: 50%;">
+  </div>
+ 
+</header>
+  <div class="container-fluid container-brown container-empty" id="features">
+    <h1>Show your product to the world!</h1>
+    <div class="container container-empty-30">
+      <div class="row" style="padding-bottom: 50px;">
+        <div class="col-sm" style="padding-top: 20px;">
+          <h4 class="text-left">Simple and clean</h4>
+          <p class="text-left" style="color: #94A1B2;">You don’t need access to an overcomplicated dataset. You need simple and straightforward information about influencers and their audience. Receive up to 600 influencers every month, to make your decisions easier
+           </p>
         </div>
+        <div class="col-sm" style="padding-top: 20px;">
+          <h4 class="text-left">All the information you'll need</h4>
+          <p class="text-left" style="color: #94A1B2;"> Get a human researched list of influencers and only the information you need (number of followers, business email, niche, engagement rate, average number of likes and other). 
+            You don't have to search through huge databases. </p>
+        </div>      
+      </div>
     </div>
-
-    <div class="container container-dark header-container" style="padding-top: 50px;" id="containerKonva">
-
+  </div>
+ 
+  <div class="container-fluid container-dark container-empty">
+    <h1>How does this work?</h1>
+    <div class="container container-empty-30">
+      <div class="row" style="padding-bottom: 50px;">
+        <div class="col-sm" style="padding-top: 20px;">
+          <h4 class="text-left">1. Sign up</h4>
+          <p class="text-left" style="color: #94A1B2;">Sign up in just a few steps. All payments and subscriptions are handled and processed by Gumroad.
+           </p>
+        </div>
+        <div class="col-sm" style="padding-top: 20px;">
+          <h4 class="text-left">2. Get the list</h4>
+          <p class="text-left" style="color: #94A1B2;"> Get a list of Instagram and TikTok influencers with all the information you will need at the beginning of the month.</p>
+        </div>
+        <div class="col-sm" style="padding-top: 20px;">
+          <h4 class="text-left">3. Profit</h4>
+          <p class="text-left" style="color: #94A1B2;"> Contact influencers based on your campaign's goals and needs and skyrocket your product sales.</p>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        //Globals
-        var BackgroundImage=null;
-        var TextOnCanvas="";
-        var defaultColor = "#000000";
-        
-        var colorWell=document.getElementById("colortext")
-        var selectedFontSize=document.getElementById("fontsize");
-        var fontsize=selectedFontSize.options[selectedFontSize.selectedIndex].value;
+  <div class="container-fluid container-brown container-empty" id="pricing">
+    <h1>Price worth paying!</h1>
+    <div class="container container-empty-30" style="max-width: 800px;">
+      <div class="card-deck" style="padding-bottom: 50px;">
+        <div class="card mb-4 box-shadow" style="background-color:#2C2529 ;">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Monthly</h4>
+            
+          </div>
+          <div class="card-body">
+            <p class="card-text text-left" style="color: #94A1B2;">Every month you will get a detailed list of top Instagram and TikTok influencers</p>
+            <h1 class="card-title pricing-card-title">$29 <small class="text-muted">/ mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>250 Instagram influencers</li>
+              <li>250 TikTok influencers</li>
+            </ul>
+            <a class="btn btn-outline-light text-light btn-lg" href="https://gum.co/Uhxit" target="_blank" style="color: white;">Subscribe</a>
+          </div>
+        </div>
 
-        var selectedFont=document.getElementById("fontType")
-        var fontType=selectedFont.options[selectedFont.selectedIndex].value;
+        <div class="card mb-4 box-shadow" style="background-color:#2C2529 ;">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">3 Months</h4>
+            
+          </div>
+          <div class="card-body">
+            <p class="card-text text-left" style="color: #94A1B2;">Subscribe for 3 months and get a better price and more influencers</p>
+            <h1 class="card-title pricing-card-title">$79 <small class="text-muted">/ 3mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li >300 Instagram influencers</li>
+              <li >300 TikTok influencers</li>
+            </ul>
+            <a class="btn btn-outline-light text-light btn-lg" href="https://gum.co/Uhxit" target="_blank" style="color: white;">Subscribe</a>
+          </div>
+        </div>
 
-        window.addEventListener("load", startup, false);
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid container-empty  container-brown"></div>
 
-        function startup() {
-          colorWell.value = defaultColor;
-          colorWell.addEventListener("input", changeColor, false);
-          colorWell.addEventListener("change", changeColor, false);
-          colorWell.select();
-        }
-
-        var changeColor=function(t){
-            console.log("COLORCHANGER "+event.target.value);
-            textEditor(event.target.value,fontsize,fontType);
-        }
-
-        var changeFont=function(){
-            fontsize=selectedFontSize.options[selectedFontSize.selectedIndex].value;
-            fontType=selectedFont.options[selectedFont.selectedIndex].value;
-            console.log(fontType);
-            textEditor(colorWell.value,fontsize,fontType);
-        }
-
-
-        var loadFile = function(event) {
-            var canvas = document.getElementById("imageEditor");
-            var ctx = setupCanvas(canvas);
-            var img = new Image();
-            img.onload = function(){
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img,0,0);
-                console.log(fontsize);
-                textEditor(colorWell.value,fontsize,fontType);
-            }
-            img.src = URL.createObjectURL(event.target.files[0]);
-            BackgroundImage=img;
-        };
-        
-        var textEditor=function(color,size,font){
-            var canvas = document.getElementById("textcanvas");
-            canvas.width=document.getElementById("imageEditor").width;
-            canvas.height=document.getElementById("imageEditor").height;
-            var ctx = setupCanvas(canvas);
-            var text = document.getElementById('textdisplay').value
-            TextOnCanvas=text;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            if(color){
-                ctx.fillStyle = color;
-            }
-            if(size){
-                ctx.font = size+" "+font;
-            }else{
-                ctx.font =fontsize+ " "+font;
-            }
-
-            ctx.textAlign = "center";
-            ctx.fillText(text,canvas.width/2,canvas.height/2);
-        }
-        window.addEventListener("keyup", textEditor, true);
-
-        var download=function(event){
-            var newcanvas = document.createElement("CANVAS");
-            if(BackgroundImage!=null){
-                newcanvas.width=BackgroundImage.width
-                newcanvas.height=BackgroundImage.height
-            }
-
-            var ctxtodownload=setupCanvas(newcanvas)
-            if(BackgroundImage){
-                ctxtodownload.drawImage(BackgroundImage,0,0);
-            }
-            if(colorWell.value){
-                ctxtodownload.fillStyle = colorWell.value;
-            }
-            ctxtodownload.font=fontsize+" "+fontType;
-            ctxtodownload.textAlign="center";
-            ctxtodownload.fillText(TextOnCanvas,newcanvas.width/2,newcanvas.height/2);
-
-            var image = newcanvas.toDataURL("image/png",1);
-            // document.write('<img src="'+image+'"/>');
-            var link = document.createElement('a');
-            link.download = "socialmedia.png";
-            link.href = image;
-            link.click();
-        }
-
-
-        function setupCanvas(canvas) {
-          // Get the device pixel ratio, falling back to 1.
-          var dpr = window.devicePixelRatio || 1;
-          
-          // Get the size of the canvas in CSS pixels.
-          var rect = canvas.getBoundingClientRect();
-          console.log("HEIGHT="+canvas.height)
-          // Give the canvas pixel dimensions of their CSS
-          // size * the device pixel ratio.
-          if(rect.width!=0 && rect.height!=0){
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
-          }
-          var ctx = canvas.getContext('2d');
-          // Scale all drawing operations by the dpr, so you
-          // don't have to worry about the difference.
-          ctx.scale(dpr, dpr);
-          return ctx;
-        }
-
-    </script>
+  <div class="container-fluid  container-brown">
+    <div class="footer-copyright py-3" style="color: #94A1B2;">© 2020 Copyright:
+      <a href="#" style="color: #94A1B2;"> InfluenceDoor.com</a>
+    </div>
+    </footer>
+  </div>
 
 
 </body>
