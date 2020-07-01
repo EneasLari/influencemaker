@@ -12,7 +12,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=B612&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Rakkas&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -38,7 +40,7 @@
 
                         <div class="form-group">
                             <!-- <label class="btn btn-outline-light text-light btn-sm" for="exampleFormControlSelect1"  style="cursor: pointer;">Example select</label> -->
-                            <select class="form-control btn btn-outline-light btn-sm" id="fontsize" onchange="changeFont()">
+                            <select class="form-control btn btn-outline-light btn-sm" id="fontsize" onchange="changeFontSize()">
                               <option>50px</option>
                               <option>30px</option>
                               <option>60px</option>
@@ -49,14 +51,13 @@
 
                         <div class="form-group">
                             <!-- <label class="btn btn-outline-light text-light btn-sm" for="exampleFormControlSelect1"  style="cursor: pointer;">Example select</label> -->
-                            <select class="form-control btn btn-outline-light btn-sm" id="fontType" onchange="changeFont()">
+                            <select class="form-control btn btn-outline-light btn-sm" id="fontType" onchange="changeFontType()">
                               <option>B612</option>
+                              <option>Concert One</option>
+                              <option>Lobster</option>
+                              <option>Baloo</option>
+                              <option>Roboto</option>
                               <option>Rakkas</option>
-                              <option>Lobster</option>
-                              <option>Verdana</option>
-                              <option>Impact</option>
-                              <option>B612</option>
-                              <option>Lobster</option>
                             </select>
                         </div>
 
@@ -78,8 +79,13 @@
         </div>
     </div>
 
-    <div class="container container-dark header-container" style="padding-top: 50px;" id="containerKonva">
-
+    <div class="container container-dark header-container" style="visibility: hidden;">
+        <div style="font-family: Rakkas;">Rakkas</div>
+        <div style="font-family: B612;">B612</div>
+        <div style="font-family: Lobster;">Lobster</div>
+        <div style="font-family: Baloo;">Baloo</div>
+        <div style="font-family: Roboto;">Roboto</div>
+        <div style="font-family: Concert One;">Concert One</div>
     </div>
 
     <script>
@@ -87,7 +93,6 @@
         var BackgroundImage=null;
         var TextOnCanvas="";
         var defaultColor = "#000000";
-        
         var colorWell=document.getElementById("colortext")
         var selectedFontSize=document.getElementById("fontsize");
         var fontsize=selectedFontSize.options[selectedFontSize.selectedIndex].value;
@@ -108,7 +113,6 @@
             const font = it.next();
             if (!font.done) {
               arr.push(font.value[0]);
-              console.log(font.value[0]);
             } else {
               done = font.done;
             }
@@ -116,7 +120,6 @@
       
           return arr;
         }
-        listFonts();
 
         function startup() {
           colorWell.value = defaultColor;
@@ -124,36 +127,40 @@
           colorWell.addEventListener("change", changeColor, false);
           colorWell.select();
         }
+        
 
         var changeColor=function(t){
-            console.log("COLORCHANGER "+event.target.value);
-            textEditor(event.target.value,fontsize,fontType);
+            textEditor();
         }
 
-        var changeFont=function(){
-            fontsize=selectedFontSize.options[selectedFontSize.selectedIndex].value;
-            fontType=selectedFont.options[selectedFont.selectedIndex].value;
-            console.log(fontType);
-            textEditor(colorWell.value,fontsize,fontType);
+        var changeFontType=function(){
+            console.log(event.target.value);
+            fontType=event.target.value;
+            textEditor();
+        }
+
+        var changeFontSize=function(){
+            console.log(event.target.value);
+            fontsize=event.target.value
+            textEditor();
         }
 
 
         var loadFile = function(event) {
             var canvas = document.getElementById("imageEditor");
-            var ctx = setupCanvas(canvas);
+            var ctx = canvas.getContext('2d')
             var img = new Image();
             img.onload = function(){
                 canvas.width = img.width;
                 canvas.height = img.height;
                 ctx.drawImage(img,0,0);
-                console.log(fontsize);
-                textEditor(colorWell.value,fontsize,fontType);
+                textEditor();
             }
             img.src = URL.createObjectURL(event.target.files[0]);
             BackgroundImage=img;
         };
         
-        var textEditor=function(color,size,font){
+        var textEditor=function(){
             var canvas = document.getElementById("textcanvas");
             canvas.width=document.getElementById("imageEditor").width;
             canvas.height=document.getElementById("imageEditor").height;
@@ -161,19 +168,15 @@
             var text = document.getElementById('textdisplay').value
             TextOnCanvas=text;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            if(color){
-                ctx.fillStyle = color;
+            if(colorWell.value){
+                ctx.fillStyle = colorWell.value;
             }
-            if(size){
-                ctx.font = size+" "+font;
-            }else{
-                ctx.font =fontsize+ " "+font;
-            }
-
+            ctx.font =fontsize+ " "+fontType;
+            console.log("CTXFONT="+ctx.font);
             ctx.textAlign = "center";
-            ctx.fillText(text,canvas.width/2,canvas.height/2);
+            ctx.fillText(TextOnCanvas,canvas.width/2,canvas.height/2);
         }
-        window.addEventListener("keyup", changeFont, true);
+        window.addEventListener("keyup", textEditor, true);
 
         var download=function(event){
             var newcanvas = document.createElement("CANVAS");
@@ -208,10 +211,9 @@
           
           // Get the size of the canvas in CSS pixels.
           var rect = canvas.getBoundingClientRect();
-          console.log("HEIGHT="+canvas.height)
           // Give the canvas pixel dimensions of their CSS
           // size * the device pixel ratio.
-          if(rect.width!=0 && rect.height!=0){
+          if(rect.width!=0 || rect.height!=0){
             canvas.width = rect.width * dpr;
             canvas.height = rect.height * dpr;
           }
