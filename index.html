@@ -8,8 +8,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-  <script src="colorpicker/js/bootstrap-colorpicker.js"></script>
-  <script src="https://unpkg.com/konva@6.0.0/konva.min.js"></script>
   <link rel="stylesheet" href="custom.css">
   <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 </head>
@@ -37,12 +35,25 @@
 
                         <div class="form-group">
                             <!-- <label class="btn btn-outline-light text-light btn-sm" for="exampleFormControlSelect1"  style="cursor: pointer;">Example select</label> -->
-                            <select class="form-control btn btn-outline-light btn-sm" id="fontsize" onchange="chageFontSize()">
+                            <select class="form-control btn btn-outline-light btn-sm" id="fontsize" onchange="changeFont()">
                               <option>50px</option>
                               <option>30px</option>
                               <option>60px</option>
                               <option>90px</option>
                               <option>120px</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <!-- <label class="btn btn-outline-light text-light btn-sm" for="exampleFormControlSelect1"  style="cursor: pointer;">Example select</label> -->
+                            <select class="form-control btn btn-outline-light btn-sm" id="fontType" onchange="changeFont()">
+                              <option>Arial</option>
+                              <option>Comic Sans MS</option>
+                              <option>Helvetica</option>
+                              <option>Verdana</option>
+                              <option>Impact</option>
+                              <option>Trebuchet MS</option>
+                              <option>Arial Black</option>
                             </select>
                         </div>
 
@@ -76,7 +87,10 @@
         
         var colorWell=document.getElementById("colortext")
         var selectedFontSize=document.getElementById("fontsize");
-        
+        var fontsize=selectedFontSize.options[selectedFontSize.selectedIndex].value;
+
+        var selectedFont=document.getElementById("fontType")
+        var fontType=selectedFont.options[selectedFont.selectedIndex].value;
 
         window.addEventListener("load", startup, false);
 
@@ -89,12 +103,16 @@
 
         var changeColor=function(t){
             console.log("COLORCHANGER "+event.target.value);
-            textEditor(event.target.value,selectedFontSize.options[selectedFontSize.selectedIndex].value);
+            textEditor(event.target.value,fontsize,fontType);
         }
 
-        var chageFontSize=function(){
-            textEditor(colorWell.value,selectedFontSize.options[selectedFontSize.selectedIndex].value);
+        var changeFont=function(){
+            fontsize=selectedFontSize.options[selectedFontSize.selectedIndex].value;
+            fontType=selectedFont.options[selectedFont.selectedIndex].value;
+            console.log(fontType);
+            textEditor(colorWell.value,fontsize,fontType);
         }
+
 
         var loadFile = function(event) {
             var canvas = document.getElementById("imageEditor");
@@ -104,14 +122,14 @@
                 canvas.width = img.width;
                 canvas.height = img.height;
                 ctx.drawImage(img,0,0);
-                console.log(selectedFontSize.options[selectedFontSize.selectedIndex].value);
-                textEditor(colorWell.value,selectedFontSize.options[selectedFontSize.selectedIndex].value);
+                console.log(fontsize);
+                textEditor(colorWell.value,fontsize,fontType);
             }
             img.src = URL.createObjectURL(event.target.files[0]);
             BackgroundImage=img;
         };
         
-        var textEditor=function(color,size){
+        var textEditor=function(color,size,font){
             var canvas = document.getElementById("textcanvas");
             canvas.width=document.getElementById("imageEditor").width;
             canvas.height=document.getElementById("imageEditor").height;
@@ -123,9 +141,9 @@
                 ctx.fillStyle = color;
             }
             if(size){
-                ctx.font = size+" Lora";
+                ctx.font = size+" "+font;
             }else{
-                ctx.font =selectedFontSize.options[selectedFontSize.selectedIndex].value+ " Lora";
+                ctx.font =fontsize+ " "+font;
             }
 
             ctx.textAlign = "center";
@@ -147,7 +165,7 @@
             if(colorWell.value){
                 ctxtodownload.fillStyle = colorWell.value;
             }
-            ctxtodownload.font=selectedFontSize.options[selectedFontSize.selectedIndex].value+ " Comic Sans MS";
+            ctxtodownload.font=fontsize+" "+fontType;
             ctxtodownload.textAlign="center";
             ctxtodownload.fillText(TextOnCanvas,newcanvas.width/2,newcanvas.height/2);
 
