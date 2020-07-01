@@ -10,6 +10,9 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="custom.css">
   <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=B612&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rakkas&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -47,13 +50,13 @@
                         <div class="form-group">
                             <!-- <label class="btn btn-outline-light text-light btn-sm" for="exampleFormControlSelect1"  style="cursor: pointer;">Example select</label> -->
                             <select class="form-control btn btn-outline-light btn-sm" id="fontType" onchange="changeFont()">
-                              <option>Arial</option>
-                              <option>Comic Sans MS</option>
-                              <option>Helvetica</option>
+                              <option>B612</option>
+                              <option>Rakkas</option>
+                              <option>Lobster</option>
                               <option>Verdana</option>
                               <option>Impact</option>
-                              <option>Trebuchet MS</option>
-                              <option>Arial Black</option>
+                              <option>B612</option>
+                              <option>Lobster</option>
                             </select>
                         </div>
 
@@ -93,6 +96,27 @@
         var fontType=selectedFont.options[selectedFont.selectedIndex].value;
 
         window.addEventListener("load", startup, false);
+
+        function listFonts() {
+          let { fonts } = document;
+          const it = fonts.entries();
+
+          let arr = [];
+          let done = false;
+
+          while (!done) {
+            const font = it.next();
+            if (!font.done) {
+              arr.push(font.value[0]);
+              console.log(font.value[0]);
+            } else {
+              done = font.done;
+            }
+          }
+      
+          return arr;
+        }
+        listFonts();
 
         function startup() {
           colorWell.value = defaultColor;
@@ -149,7 +173,7 @@
             ctx.textAlign = "center";
             ctx.fillText(text,canvas.width/2,canvas.height/2);
         }
-        window.addEventListener("keyup", textEditor, true);
+        window.addEventListener("keyup", changeFont, true);
 
         var download=function(event){
             var newcanvas = document.createElement("CANVAS");
