@@ -16,20 +16,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Baloo&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
-<body>
+    <body>
 
 
-    <div class="container container-dark header-container" style="padding-top: 50px;">
+        <div class="container container-dark header-container" style="padding-top: 50px;">
         <h1>Create posts for your Social Media</h1>
         <p class="lead">Create simple and beautiful social media images</p>
-    </div>
+        </div>
 
-    <div class="container-fluid container-dark">
+        <div class="container-fluid container-dark">
         <div class="row">
             <div class="col">
                 <div class="container">
                     <span class="btn-toolbar">
-                        <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
+                        <p><input type="file"  accept="image/*" name="image" id="file"  onchange="ImageCanvas.LoadImage(event)" style="display: none;"></p>
                         <p><label  type="button" class="btn btn-outline-light text-light btn-sm"  for="file" style="cursor: pointer;">Image</label></p>
                         
                         <p><input type="button" name="image" id="filetodownload"  onclick="download(event)" style="display: none;"></p>
@@ -77,171 +77,17 @@
                 </div>
             </div>
         </div>
-    </div>
+        </div>
 
-    <div class="container container-dark header-container" style="visibility: hidden;">
+        <div class="container container-dark header-container" style="visibility: hidden;">
         <div style="font-family: Rakkas;">Rakkas</div>
         <div style="font-family: B612;">B612</div>
         <div style="font-family: Lobster;">Lobster</div>
         <div style="font-family: Baloo;">Baloo</div>
         <div style="font-family: Roboto;">Roboto</div>
         <div style="font-family: Concert One;">Concert One</div>
-    </div>
-
-    <script>
-        //Globals
-        var BackgroundImage=null;
-        var TextOnCanvas="";
-        var defaultColor = "#000000";
-        var colorWell=document.getElementById("colortext")
-        var selectedFontSize=document.getElementById("fontsize");
-        var fontsize=selectedFontSize.options[selectedFontSize.selectedIndex].value;
-
-        var selectedFont=document.getElementById("fontType")
-        var fontType=selectedFont.options[selectedFont.selectedIndex].value;
-
-        window.addEventListener("load", startup, false);
-
-        function listFonts() {
-          let { fonts } = document;
-          const it = fonts.entries();
-
-          let arr = [];
-          let done = false;
-
-          while (!done) {
-            const font = it.next();
-            if (!font.done) {
-              arr.push(font.value[0]);
-            } else {
-              done = font.done;
-            }
-          }
-      
-          return arr;
-        }
-
-        function startup() {
-          colorWell.value = defaultColor;
-          colorWell.addEventListener("input", changeColor, false);
-          colorWell.addEventListener("change", changeColor, false);
-          colorWell.select();
-        }
-        
-
-        var changeColor=function(t){
-            textEditor();
-        }
-
-        var changeFontType=function(){
-            console.log(event.target.value);
-            fontType=event.target.value;
-            textEditor();
-        }
-
-        var changeFontSize=function(){
-            console.log(event.target.value);
-            fontsize=event.target.value
-            textEditor();
-        }
-
-
-        var loadFile = function(event) {
-            var canvas = document.getElementById("imageEditor");
-            var img = new Image();
-            img.onload = function(){
-                canvas.width = img.width;
-                canvas.height = img.height;
-                var ctx = canvas.getContext('2d');
-                ctx.mozImageSmoothingEnabled = false;  // firefox
-                ctx.imageSmoothingEnabled = false;
-                ctx.drawImage(img,0,0);
-                textEditor();
-            }
-            img.src = URL.createObjectURL(event.target.files[0]);
-            BackgroundImage=img;
-        };
-        
-        var textEditor=function(){
-            var canvas = document.getElementById("textcanvas");
-            canvas.width=document.getElementById("imageEditor").width;
-            canvas.height=document.getElementById("imageEditor").height;
-            console.log("BEFORE "+canvas.width+" "+canvas.height);
-            var ctx = setupCanvas(canvas);
-            console.log("AFTER "+canvas.width+" "+canvas.height);
-            var text = document.getElementById('textdisplay').value
-            TextOnCanvas=text;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            if(colorWell.value){
-                ctx.fillStyle = colorWell.value;
-            }
-            ctx.font =fontsize+ " "+fontType;
-            console.log("CTXFONT="+ctx.font);
-            ctx.textAlign = "center";
-            ctx.fillText(TextOnCanvas,canvas.width/2,canvas.height/2);
-        }
-        window.addEventListener("keyup", textEditor, true);
-
-        var download=function(event){
-            var newcanvas = document.createElement("CANVAS");
-            var textcanvas =document.getElementById("textcanvas");
-            if(BackgroundImage!=null){
-                newcanvas.width=BackgroundImage.width
-                newcanvas.height=BackgroundImage.height
-            }
-            console.log("BEFORE "+newcanvas.width+" "+newcanvas.height);
-            var ctxtodownload=setupCanvas(newcanvas)
-            console.log("AFTER "+newcanvas.width+" "+newcanvas.height);
-            if(BackgroundImage){
-                ctxtodownload.drawImage(BackgroundImage,0,0);
-            }
-            // if(colorWell.value){
-            //     ctxtodownload.fillStyle = colorWell.value;
-            // }
-            // ctxtodownload.font=fontsize+" "+fontType;
-            // ctxtodownload.textAlign="center";
-            // ctxtodownload.fillText(TextOnCanvas,newcanvas.width/2,newcanvas.height/2);
-
-            ctxtodownload.drawImage(textcanvas,
-                newcanvas.width / 2 - textcanvas.width / 2,
-                newcanvas.height / 2 - textcanvas.height / 2 
-            );
-
-            var image = newcanvas.toDataURL("image/png",1);
-            // document.write('<img src="'+image+'"/>');
-            var link = document.createElement('a');
-            link.download = "socialmedia.png";
-            link.href = image;
-            link.click();
-        }
-
-
-        function setupCanvas(canvas) {
-          // Get the device pixel ratio, falling back to 1.
-          var dpr = window.devicePixelRatio || 2;
-          
-          // Get the size of the canvas in CSS pixels.
-          var rect = canvas.getBoundingClientRect();
-          // Give the canvas pixel dimensions of their CSS
-          // size * the device pixel ratio.
-          if(rect.width!=0 || rect.height!=0){
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
-
-            canvas.style.width = `${dpr*canvas.width}px`;
-            canvas.style.height = `${dpr*canvas.height}px`
-
-          }
-          var ctx = canvas.getContext('2d');
-          // Scale all drawing operations by the dpr, so you
-          // don't have to worry about the difference.
-          console.log("DPR="+dpr)
-          ctx.scale(dpr, dpr);
-          return ctx;
-        }
-
-    </script>
-
-
-</body>
+        </div>
+    </body>
+    <script src="canvas.js"></script>
+    <script src="index.js"></script>
 </html>
