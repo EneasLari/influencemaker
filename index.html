@@ -32,15 +32,15 @@
                         <p><input type="file"  accept="image/*" name="image" id="file"  onchange="ImageCanvas.LoadImage(event)" style="display: none;"></p>
                         <p><label  type="button" class="btn btn-outline-light text-light btn-sm"  for="file" style="cursor: pointer;">Image</label></p>
                         
-                        <p><input type="button" name="image" id="filetodownload"  onclick="download(event)" style="display: none;"></p>
+                        <p><input type="button" name="image" id="filetodownload"  onclick="ImageCanvas.Download(event)" style="display: none;"></p>
                         <p><label type="button" class="btn btn-outline-light text-light btn-sm"  for="filetodownload" style="cursor: pointer;">Download Image</label></p>
                         
-                        <p><input type="color" name="image" id="colortext" style="display: none;" value="#000000" ></p>
-                        <p><label class="btn btn-outline-light text-light btn-sm"  for="colortext" style="cursor: pointer;">Color</label></p>
+                        <p><input type="color" name="image" id="colortext" style="display: none;" value="#000000" oninput="ImageCanvas.ChangeColor(event)" onchange="ImageCanvas.ChangeColor(event)"></p>
+                        <p><label class="btn btn-outline-light text-light btn-sm"  for="colortext" style="cursor: pointer;" >Color</label></p>
 
                         <div class="form-group">
                             <!-- <label class="btn btn-outline-light text-light btn-sm" for="exampleFormControlSelect1"  style="cursor: pointer;">Example select</label> -->
-                            <select class="form-control btn btn-outline-light btn-sm" id="fontsize" onchange="changeFontSize()">
+                            <select class="form-control btn btn-outline-light btn-sm" id="fontsize" onchange="ImageCanvas.ChangeFontSize()">
                               <option>50px</option>
                               <option>30px</option>
                               <option>60px</option>
@@ -51,7 +51,7 @@
 
                         <div class="form-group">
                             <!-- <label class="btn btn-outline-light text-light btn-sm" for="exampleFormControlSelect1"  style="cursor: pointer;">Example select</label> -->
-                            <select class="form-control btn btn-outline-light btn-sm" id="fontType" onchange="changeFontType()">
+                            <select class="form-control btn btn-outline-light btn-sm" id="fontType" onchange="ImageCanvas.ChangeFontType()">
                               <option>B612</option>
                               <option>Concert One</option>
                               <option>Lobster</option>
@@ -64,7 +64,7 @@
                     </span>
                 </div>
                 <label for="textdisplay">Text:</label>
-                <input type="text" class="form-control" id="textdisplay" name="text">
+                <input type="text" class="form-control" id="textdisplay" name="text" onkeyup="ImageCanvas.TextInputHandler()">
                 <br>
             </div>
         </div>
