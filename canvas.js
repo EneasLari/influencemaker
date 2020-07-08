@@ -9,6 +9,10 @@ class Canvas{
         this.TextInputElement=document.getElementById(TextInputId);
         this.LoadedImage=null;
         this.Text="";
+        this.TextClientX=null;
+        this.TextClientY=null;
+        this.TextX=null;
+        this.TextY=null;
         this.FontSize=document.getElementById(FontSizeId).options[document.getElementById(FontSizeId).selectedIndex].value;
         this.FontType=document.getElementById(FontyTypeId).options[document.getElementById(FontyTypeId).selectedIndex].value;
         this.ColorWell=document.getElementById(ColorWellId)
@@ -16,6 +20,19 @@ class Canvas{
             throw "Element not Found or Loaded"
         }
         this.Startup();
+        var that=this;
+        this.TextCanvasElement.addEventListener('mousedown', function(e) {
+            const rect = this.getBoundingClientRect()
+            console.log(rect);
+            const x = e.clientX - rect.left
+            const y = e.clientY - rect.top;
+            that.TextClientX=e.clientX;
+            that.TextClientY=e.clientY;
+            that.TextX=x;
+            that.TextY=y;
+            console.log("Ax: " + x + " Ay: " + y)
+            that.TextInputHandler()
+        })
     }
 
     DrawBackGround(image){
@@ -29,13 +46,14 @@ class Canvas{
         this.LoadedImage=image;
     }
 
-    TextInputHandler(){
+    TextInputHandler(x,y){
         console.log("TEXTINPUTHANDLER")
         
         var canvas = this.TextCanvasElement
-        canvas.width=this.ImageCanvasElement.width;
-        canvas.height=this.ImageCanvasElement.height;
-        console.log(canvas.height)
+        console.log(this.ImageCanvasElement)
+        canvas.width=this.ImageCanvasElement.getBoundingClientRect().width;
+        canvas.height=this.ImageCanvasElement.getBoundingClientRect().height;
+        
         //console.log("IMAGE CANVAS ELEMENT :"+canvas.width+" "+canvas.height );
         //console.log("Dimensions=>Image:"+this.ImageCanvasElement.width+"x"+ this.ImageCanvasElement.height+" Text"+this.TextCanvasElement.width+"x"+ this.TextCanvasElement.height)
         var ctx =canvas.getContext('2d');//this.SetupCanvas(canvas);
@@ -56,7 +74,12 @@ class Canvas{
 
         ctx.font =cSize+ "px "+this.FontType;
         ctx.textAlign = "center";
-        ctx.fillText(this.Text,canvas.width/2,canvas.height/2);
+        if(this.TextX && this.TextY){
+            ctx.fillText(this.Text,this.TextX,this.TextY);
+        }else{
+            ctx.fillText(this.Text,canvas.width/2,canvas.height/2);
+        }
+        
     }
     
     LoadImage(event){
@@ -67,6 +90,78 @@ class Canvas{
             that.TextInputHandler();
         }
         img.src = URL.createObjectURL(event.target.files[0]);
+    }
+
+
+    ChangeColor(t){
+        this.TextInputHandler();
+    }
+
+    Startup() {
+        console.log("STARTUP")
+        this.ColorWell.value = "#000000";
+        this.ColorWell.select();
+    }
+
+    ChangeFontType(){
+        console.log(event.target.value);
+        this.FontType=event.target.value;
+        this.TextInputHandler();
+    }
+
+    ChangeFontSize(){
+        console.log(event.target.value);
+        this.FontSize=event.target.value
+        this.TextInputHandler();
+    }
+
+    GetCursorPosition(canvas, event) {
+        const rect = canvas.getBoundingClientRect()
+        const x = event.clientX - rect.left
+        const y = event.clientY - rect.top
+        console.log("x: " + x + " y: " + y)
+    }
+
+    Download(event){
+        var newcanvas =document.getElementById("downloading")
+        if(this.LoadedImage!=null){
+            newcanvas.width=this.LoadedImage.width
+            newcanvas.height=this.LoadedImage.height
+        }
+        var ctxtodownload=newcanvas.getContext('2d');//this.SetupCanvas(newcanvas)
+        if(this.LoadedImage){
+            ctxtodownload.drawImage(this.LoadedImage,0,0);
+        }
+        if( this.ColorWell.value){
+            ctxtodownload.fillStyle = this.ColorWell.value;
+        }
+
+        var fontBase = 800
+        var size=this.FontSize.split("px")[0]
+        var ratio = size / fontBase;
+        var cSize = newcanvas.width * ratio;
+
+
+        ctxtodownload.font=cSize+"px "+this.FontType;
+        ctxtodownload.textAlign="center";
+        // var x=this.TextX+(newcanvas.width-(this.TextCanvasElement.width))
+        // var y=this.TextY+(newcanvas.height-(this.TextCanvasElement.height))
+
+        var rect = newcanvas.getBoundingClientRect()
+        console.log(rect);
+        var x = this.TextClientX - rect.left
+        var y = this.TextClientY - rect.top;
+
+        console.log("x: " + x + " y: " + y)
+        ctxtodownload.fillText(this.Text,x,y);
+
+        var image = newcanvas.toDataURL("image/png",1);
+        var link = document.createElement('a');
+        link.download = "socialmedia.png";
+        link.href = image;
+        link.click();
+        newcanvas.width=0;
+        newcanvas.height=0;
     }
 
     SetupCanvas(canvas,scaleCanvas) {
@@ -93,61 +188,6 @@ class Canvas{
         //console.log("DPR="+dpr)
         ctx.scale(dpr, dpr);
         return ctx;
-    }
-    ChangeColor(t){
-        this.TextInputHandler();
-    }
-
-    Startup() {
-        console.log("STARTUP")
-        this.ColorWell.value = "#000000";
-        //this.ColorWell.addEventListener("input", this.ChangeColor, false);
-        //this.ColorWell.addEventListener("change", this.ChangeColor, false);
-        this.ColorWell.select();
-    }
-
-    ChangeFontType(){
-        console.log(event.target.value);
-        this.FontType=event.target.value;
-        this.TextInputHandler();
-    }
-
-    ChangeFontSize(){
-        console.log(event.target.value);
-        this.FontSize=event.target.value
-        this.TextInputHandler();
-    }
-
-    Download(event){
-        var newcanvas =document.getElementById("downloading")
-        if(this.LoadedImage!=null){
-            newcanvas.width=this.LoadedImage.width
-            newcanvas.height=this.LoadedImage.height
-        }
-        var ctxtodownload=newcanvas.getContext('2d');//this.SetupCanvas(newcanvas)
-        if(this.LoadedImage){
-            ctxtodownload.drawImage(this.LoadedImage,0,0);
-        }
-        if( this.ColorWell.value){
-            ctxtodownload.fillStyle = this.ColorWell.value;
-        }
-
-        var fontBase = 800
-        var size=this.FontSize.split("px")[0]
-        var ratio = size / fontBase;
-        var cSize = newcanvas.width * ratio;
-
-        ctxtodownload.font=cSize+"px "+this.FontType;
-        ctxtodownload.textAlign="center";
-        ctxtodownload.fillText(this.Text,newcanvas.width/2,newcanvas.height/2);
-
-        var image = newcanvas.toDataURL("image/png",1);
-        var link = document.createElement('a');
-        link.download = "socialmedia.png";
-        link.href = image;
-        link.click();
-        newcanvas.width=0;
-        newcanvas.height=0;
     }
 
 }
