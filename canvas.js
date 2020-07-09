@@ -156,7 +156,7 @@ class Canvas{
         if(x && y){
             ctxtodownload.fillText(this.Text,x,y);
         }else{
-            ctxtodownload.fillText(this.Text,canvas.width/2,canvas.height/2)
+            ctxtodownload.fillText(this.Text,newcanvas.width/2,newcanvas.height/2)
         }
         
 
