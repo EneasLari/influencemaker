@@ -144,13 +144,13 @@ class Canvas{
 
         ctxtodownload.font=cSize+"px "+this.FontType;
         ctxtodownload.textAlign="center";
-        // var x=this.TextX+(newcanvas.width-(this.TextCanvasElement.width))
-        // var y=this.TextY+(newcanvas.height-(this.TextCanvasElement.height))
+        var x=this.TextX*(newcanvas.width/(this.TextCanvasElement.width))
+        var y=this.TextY*(newcanvas.height/(this.TextCanvasElement.height))
 
-        var rect = newcanvas.getBoundingClientRect()
-        console.log(rect);
-        var x = this.TextClientX - rect.left
-        var y = this.TextClientY - rect.top;
+        // var rect = newcanvas.getBoundingClientRect()
+        // console.log(rect);
+        // var x = this.TextClientX - rect.left
+        // var y = this.TextClientY - rect.top;
 
         console.log("x: " + x + " y: " + y)
         ctxtodownload.fillText(this.Text,x,y);
