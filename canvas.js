@@ -66,7 +66,6 @@ class Canvas{
 
         ctx.font =cSize+ "px "+this.FontType;
         ctx.textAlign = "center";
-        console(this.TextX+" "+this.TextY)
         if(this.TextX && this.TextY){
             ctx.fillText(this.Text,this.TextX,this.TextY);
         }else{
@@ -76,16 +75,13 @@ class Canvas{
     }
     
     LoadDefaultImage(imageURL){
-        console.log("MOTHERFUCKEWR")
         var img = new Image();
        // img.crossOrigin = "Anonymous";
         var that=this;//Here this refers to object itself,we assign it to a variable
         img.onload = function(){
             that.DrawBackGround(img);
-            this.Text=
             that.TextInputHandler();
             this.LoadedImage=img;
-            console.log( img)
         }
         img.src = imageURL;
     }
@@ -157,8 +153,12 @@ class Canvas{
         // console.log(rect);
         // var x = this.TextClientX - rect.left
         // var y = this.TextClientY - rect.top;
-
-        ctxtodownload.fillText(this.Text,x,y);
+        if(x && y){
+            ctxtodownload.fillText(this.Text,x,y);
+        }else{
+            ctxtodownload.fillText(this.Text,canvas.width/2,canvas.height/2)
+        }
+        
 
         var image = newcanvas.toDataURL("image/png",1);
         var link = document.createElement('a');
