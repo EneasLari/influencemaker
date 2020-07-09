@@ -66,6 +66,7 @@ class Canvas{
 
         ctx.font =cSize+ "px "+this.FontType;
         ctx.textAlign = "center";
+        console(this.TextX+" "+this.TextY)
         if(this.TextX && this.TextY){
             ctx.fillText(this.Text,this.TextX,this.TextY);
         }else{
@@ -81,6 +82,7 @@ class Canvas{
         var that=this;//Here this refers to object itself,we assign it to a variable
         img.onload = function(){
             that.DrawBackGround(img);
+            this.Text=
             that.TextInputHandler();
             this.LoadedImage=img;
             console.log( img)
