@@ -43,13 +43,14 @@ class Canvas{
         context.imageSmoothingEnabled = false;
         context.drawImage(image,0,0);
         this.LoadedImage=image;
+        this.OnCanvasResize()
+        console.log(document.getElementById("canvascontainer").getClientRects())
     }
 
     TextInputHandler(x,y){
         var canvas = this.TextCanvasElement
         canvas.width=this.ImageCanvasElement.getBoundingClientRect().width;
         canvas.height=this.ImageCanvasElement.getBoundingClientRect().height;
-
         var ctx =canvas.getContext('2d');//this.SetupCanvas(canvas);
         this.Text=this.TextInputElement.value;
 
@@ -97,6 +98,9 @@ class Canvas{
         img.src = URL.createObjectURL(event.target.files[0]);
     }
 
+    OnCanvasResize(){
+        document.getElementById("canvascontainer").style.height=this.ImageCanvasElement.getBoundingClientRect().height+"px";
+    }
 
     ChangeColor(t){
         this.TextInputHandler();
