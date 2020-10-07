@@ -30,51 +30,68 @@
                 <div class="row">
                     <div class="col">
                         <div class="container">
-                            <span class="btn-toolbar">
-                                <p><input type="file"  accept="image/*" name="image" id="file" onload="ImageCanvas.LoadDefaultImage(event)"  onchange="ImageCanvas.LoadImage(event)" style="display: none;"></p>
-                                <p><label  type="button" class="btn btn-outline-light text-light btn-sm"  for="file" style="cursor: pointer;">Image</label></p>
-                                
-                                <p><input type="button" name="image" id="filetodownload"  onclick="ImageCanvas.Download(event)" style="display: none;"></p>
-                                <p><label type="button" class="btn btn-outline-light text-light btn-sm"  for="filetodownload" style="cursor: pointer;">Download Image</label></p>
-                                
-                            </span>
-                        
-                            <span class="btn-toolbar">
-                                <div class="form-group">
-                                    <!-- <label class="btn btn-outline-light text-light btn-sm" for="exampleFormControlSelect1"  style="cursor: pointer;">Example select</label> -->
-                                    <select class="form-control btn btn-outline-light btn-sm" id="fontsize" onchange="ImageCanvas.ChangeFontSize()">
-                                      <option>50px</option>
-                                      <option>30px</option>
-                                      <option>60px</option>
-                                      <option>90px</option>
-                                      <option>120px</option>
-                                    </select>
+                            <div class="row">
+                                <div class="col-sm">   
+                                    <p><input  type="file"  accept="image/*" name="image" id="file" onload="ImageCanvas.LoadDefaultImage(event)"  onchange="ImageCanvas.LoadImage(event)" style="display: none;"></p>
+                                    <p><label type="button" class="btn btn-outline-light text-light btn-sm"  for="file" style="cursor: pointer;width: 100%;">Image</label></p>                                  
                                 </div>
-                            
-                                <div class="form-group">
-                                    <!-- <label class="btn btn-outline-light text-light btn-sm" for="exampleFormControlSelect1"  style="cursor: pointer;">Example select</label> -->
-                                    <select class="form-control btn btn-outline-light btn-sm" id="fontType" onchange="ImageCanvas.ChangeFontType()">
-                                        <option>Lobster</option>
-                                        <option>B612</option>
-                                        <option>Concert One</option>                             
-                                        <option>Baloo</option>
-                                        <option>Roboto</option>
-                                        <option>Rakkas</option>
-                                    </select>
+                                <div class="col-sm">  
                                 </div>
-                            </span>
-                        
-                            <span class="btn-toolbar">
-                            
-                                <p><input type="color" name="image" id="colortext" style="display: none;" value="#FFFFFF" oninput="ImageCanvas.ChangeColor(event)" onchange="ImageCanvas.ChangeColor(event)"></p>
-                                <p><label class="btn btn-outline-light text-light btn-sm"  for="colortext" style="cursor: pointer;" >Color</label></p>
-                            
-                            </span>
-                        
-                        
+                            </div>
+                            <div class="row">
+                                <div class="col-sm">                                    
+                                    <div class="form-group">                                  
+                                        <select class="form-control btn btn-outline-light btn-sm" id="fontType" onchange="ImageCanvas.ChangeFontType()">
+                                            <option>Lobster</option>
+                                            <option>B612</option>
+                                            <option>Concert One</option>                             
+                                            <option>Baloo</option>
+                                            <option>Roboto</option>
+                                            <option>Rakkas</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm">                                    
+                                    <div class="form-group">                                  
+                                        <select class="form-control btn btn-outline-light btn-sm" id="fontsize" onchange="ImageCanvas.ChangeFontSize()">
+                                          <option>50px</option>
+                                          <option>30px</option>
+                                          <option>60px</option>
+                                          <option>90px</option>
+                                          <option>120px</option>
+                                        </select>
+                                    </div>                                   
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm">  
+                                    <p><input type="color" name="image" id="colortext" style="display: none;" value="#FFFFFF" oninput="ImageCanvas.ChangeColor(event)" onchange="ImageCanvas.ChangeColor(event)"></p>
+                                    <p><label class="btn btn-outline-light text-light btn-sm"  for="colortext" style="cursor: pointer;width: 100%;" >Color</label></p>
+                                </div>
+                                <div class="col-sm"> </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm"> 
+                                    <div class="form-group">
+                                        <p><input  type="button" name="image" id="filetodownload"  onclick="ImageCanvas.Download(event)" style="display: none;"></p>
+                                        <p><label type="button" class="btn btn-outline-light text-light btn-sm"  for="filetodownload" style="cursor: pointer;width: 100%;">Download Image</label></p>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm"> </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm"> 
+                                    <label for="textdisplay">Text:</label><small>(click on image to change position)</small>
+                                    <input type="text" class="form-control" id="textdisplay" name="text"  onkeyup="ImageCanvas.TextInputHandler()" value="Positive Vision">
+                                </div>
+                            </div>
+
                         </div>
-                        <label for="textdisplay">Text:</label><small>(click on image to change position)</small>
-                        <input type="text" class="form-control" id="textdisplay" name="text"  onkeyup="ImageCanvas.TextInputHandler()" value="Positive Vision">
+
+                        
                         <br>
                     </div>
                 </div>
@@ -94,26 +111,6 @@
             </div>
         </div>
 
-        <div class="container-fluid container-dark container-empty">
-            <h1>How does this work?</h1>
-            <div class="container container-empty-30">
-              <div class="row" style="padding-bottom: 50px;">
-                <div class="col-sm" style="padding-top: 20px;">
-                  <h4 class="text-left">1. Sign up</h4>
-                  <p class="text-left" style="color: #94A1B2;">Sign up in just a few steps. All payments and subscriptions are handled and processed by Gumroad.
-                   </p>
-                </div>
-                <div class="col-sm" style="padding-top: 20px;">
-                  <h4 class="text-left">2. Get the list</h4>
-                  <p class="text-left" style="color: #94A1B2;"> Get a list of Instagram and TikTok influencers with all the information you will need at the beginning of the month.</p>
-                </div>
-                <div class="col-sm" style="padding-top: 20px;">
-                  <h4 class="text-left">3. Profit</h4>
-                  <p class="text-left" style="color: #94A1B2;"> Contact influencers based on your campaign's goals and needs and skyrocket your product sales.</p>
-                </div>
-              </div>
-            </div>
-        </div>
 
 
         <div class="container-fluid  container-dark container-empty">
